@@ -209,8 +209,6 @@ print("epistemic uncertainty：",prediction_var.mean())
 print("uncertainty：",np.array(train_sigma).mean()+prediction_var.mean())
 
 
-
-
 # evaluation on test data set
 valid = np.array(valid)
 valid_sigma=np.array(valid_sigma)
@@ -228,7 +226,6 @@ Vconfidence_upper = np.array(Vconfidence_upper).T.squeeze(-1)
 Vconfidence_lower = np.array(Vconfidence_lower).T.squeeze(-1)
 Vconfidence_width = Vconfidence_upper-Vconfidence_lower
 
-
 valid_y=valid_y.cpu().detach().numpy()
 validation_mean=np.array(validation_mean)
 validation_sigma=torch.tensor(validation_sigma)
@@ -244,7 +241,6 @@ print("valid_mae:",valid_mae,"valid_mse:",valid_mse," valid_rmse:",valid_rmse," 
 print("aleatoric uncertainty:",np.array(validation_sigma).mean())
 print("epistemic uncertainty:",validation_var.mean())
 print("uncertainty:",validation_var.mean()+np.array(validation_sigma).mean())
-
 
 # prediction data set
 Data = np.array(lossData)
@@ -265,18 +261,8 @@ Nconfidence_upper.append((Nprediction_mean + 1.96 * n * Nprediction_std))
 Nconfidence_upper = np.array(Nconfidence_upper).T.squeeze(-1)
 Nconfidence_lower = np.array(Nconfidence_lower).T.squeeze(-1)
 Nconfidence_width = Nconfidence_upper-Nconfidence_lower
-# 计算置信上限
-print('Nconfidence_width shape',Nconfidence_width.shape)
-print()
 N_sigma=torch.exp(torch.tensor(N_sigma))
 
 print("aleatoric uncertainty:",np.array(N_sigma).mean())
 print("epistemic uncertainty:",np.array(Nprediction_var).mean())
 print("uncertainty:",np.array(N_sigma).mean()+np.array(Nprediction_var).mean())
-
-
-
-
-
-
-
