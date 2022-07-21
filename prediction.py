@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import torch.optim
 import torch.utils.data
 import torch.utils.data.distributed
@@ -23,7 +22,7 @@ def get_tensor_from_pd(dataframe_series):
 torch.__version__
 
 seed = 42
-torch.cuda.manual_seed_all(seed)   # 为所有GPU设置随机种子
+torch.cuda.manual_seed_all(seed)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class Net(nn.Module):
@@ -55,12 +54,12 @@ print(net)
 summary(net, input_size=(14,))
 
 scaler = StandardScaler()   #standand
-# path1=path of train data r'E:\地理加权\预测数据\最新\训练集.csv'
-# path2=path of test data  r'E:\地理加权\预测数据\原始数据学习\测试集.csv'
-# path3=path of prediation data r'E:\地理加权\预测数据\inputAttri.csv'
-new_data = pd.read_csv(r'E:\地理加权\预测数据\inputAttri.csv')
-train_data = pd.read_csv(r'E:\地理加权\预测数据\最新\训练集.csv')
-valid_data = pd.read_csv(r'E:\地理加权\预测数据\原始数据学习\测试集.csv')
+# path1 = path of train data
+# path2 = path of test data
+# path3 = path of prediation
+new_data = pd.read_csv('path1')
+train_data = pd.read_csv('path2')
+valid_data = pd.read_csv('path3')
 train_data=np.array(train_data)
 valid_data=np.array(valid_data)
 train_x = train_data[:, 1:15]
@@ -82,15 +81,12 @@ def enable_dropout(model):
         if m.__class__.__name__.startswith('Dropout'):
             m.train()
 
-
 # Uncertainty Loss
 class UncertaintyLoss(nn.Module):
-
     def __init__(self):
         super(UncertaintyLoss, self).__init__()
 
     def forward(self, y,y_hat):
-
         si = torch.tensor(y_hat[:,1])
         sigma = torch.log(1+torch.exp(si))
         w = 0.5*(pow((y-y_hat[:,0]),2))
@@ -128,12 +124,6 @@ for m in range(2):
     epoch_valid_sigma = []
     for epoch in range(epochs):
         net.train()
-        # if epoch < 500:
-        #     learning_rate = 0.001
-        # elif 500 < epoch < 800:
-        #     learning_rate = 0.0005
-        # else:
-        #     learning_rate = 0.0001
         for step in range(total_step):
             xs = train_x[step * batch_size:(step + 1) * batch_size, :]
             ys = train_y[step * batch_size:(step + 1) * batch_size]
@@ -145,7 +135,6 @@ for m in range(2):
             step_train_loss_value.append(loss.cpu().detach().numpy())
 
         epoch_train_loss_value.append(np.mean(step_train_loss_value))
-
         loss_value = pd.DataFrame({'m': m,'epoch_train_loss_value':epoch_train_loss_value})
 
         if (epoch+1) % 5 == 0:
@@ -209,21 +198,17 @@ prediction.to_csv('./train.csv',index=False)
 
 train_sigma = torch.exp(torch.tensor(train_sigma))
 train_y=train_y.cpu().detach().numpy()
-mse = (np.sum((train_y - prediction_mean) ** 2)) / len(train_y)   #残差平方
-rmse = np.sqrt(mse)     #残差平方开根号
-mae = (np.sum(np.absolute(train_y - prediction_mean))) / len(train_y)  #残差绝对值
-r2 = 1-(mse/((train_y**2).mean()-(train_y.mean()**2)))#R2均方误差/方差np.var(train_y)
+mse = (np.sum((train_y - prediction_mean) ** 2)) / len(train_y)
+rmse = np.sqrt(mse)
+mae = (np.sum(np.absolute(train_y - prediction_mean))) / len(train_y)
+r2 = 1-(mse/((train_y**2).mean()-(train_y.mean()**2)))
 
 print(" MAE:",mae,"MSE:",mse," RMSE:",rmse," R-square:",r2)
 print("aleatoric uncertainty：",np.array(train_sigma).mean())
 print("epistemic uncertainty：",prediction_var.mean())
 print("uncertainty：",np.array(train_sigma).mean()+prediction_var.mean())
 
-dict = {"train_mae":mae,"train_mse":mse," train_rmse":rmse," train_r2":r2,
-                        "Aleatoric Uncertainty": np.array(train_sigma).mean(),"Epistemic Uncertainty":prediction_var.mean(),
-                        "Model Uncertainty":np.array(train_sigma).mean()+prediction_var.mean()}
-train_r2 = pd.DataFrame(list(dict.items()))
-train_r2.to_csv(r'./train_r2.csv',index=False)
+
 
 
 # evaluation on test data set
@@ -237,8 +222,8 @@ validation_mean = valid.mean(axis=0)
 validation_sigma=valid_sigma.mean(axis=0)/len(valid_sigma)
 validation_var = (valid**2).mean(axis=0)-(validation_mean**2)
 validation_std = np.sqrt(validation_var)
-Vconfidence_lower.append((validation_mean - 1.96 * n * validation_std))  # 计算置信下限
-Vconfidence_upper.append((validation_mean + 1.96 * n * validation_std))  # 计算置信上限
+Vconfidence_lower.append((validation_mean - 1.96 * n * validation_std))
+Vconfidence_upper.append((validation_mean + 1.96 * n * validation_std))
 Vconfidence_upper = np.array(Vconfidence_upper).T.squeeze(-1)
 Vconfidence_lower = np.array(Vconfidence_lower).T.squeeze(-1)
 Vconfidence_width = Vconfidence_upper-Vconfidence_lower
@@ -250,26 +235,16 @@ validation_sigma=torch.tensor(validation_sigma)
 validation_sigma=torch.exp(validation_sigma)
 print('valid_y',valid_y.shape,type(train_y))
 print('validation_mean',validation_mean.shape,type(validation_mean))
-valid_mse = (np.sum((valid_y - validation_mean) ** 2)) / len(valid_y)   #残差平方
-valid_rmse = sqrt(valid_mse)     #残差平方开根号
-valid_mae = (np.sum(np.absolute(valid_y - validation_mean))) / len(valid_y)  #残差绝对值
+valid_mse = (np.sum((valid_y - validation_mean) ** 2)) / len(valid_y)
+valid_rmse = sqrt(valid_mse)
+valid_mae = (np.sum(np.absolute(valid_y - validation_mean))) / len(valid_y)
 valid_var=(valid_y**2).mean()-((valid_y.mean())**2)
-valid_r2 = 1-(valid_mse/ ((valid_y**2).mean()-((valid_y.mean())**2)))  #R2均方误差/方差np.var(valid_y)
+valid_r2 = 1-(valid_mse/ ((valid_y**2).mean()-((valid_y.mean())**2)))
 print("valid_mae:",valid_mae,"valid_mse:",valid_mse," valid_rmse:",valid_rmse," r2:",valid_r2)
 print("aleatoric uncertainty:",np.array(validation_sigma).mean())
 print("epistemic uncertainty:",validation_var.mean())
 print("uncertainty:",validation_var.mean()+np.array(validation_sigma).mean())
 
-valid_mean = pd.DataFrame({'id':valid_id,"line": valid1_x[:,0],"CMP": valid1_x[:,1],"SValue": valid_y,'validation':validation_mean,
-                           'uncertainy':validation_var,"noise":valid_y - validation_mean,
-                           'Vconfidence_lower':Vconfidence_lower,'Vconfidence_upper':Vconfidence_upper,
-                           'valid_sigma':validation_sigma})
-valid_mean.to_csv(r'./valid_mean.csv',index=False)
-dict={"valid_mae":valid_mae,"valid_mse":valid_mse," valid_rmse":valid_rmse," r2":valid_r2,
-                        "Aleatoric Uncertainty": np.array(validation_sigma).mean(),"Epistemic Uncertainty":validation_var.mean(),
-                        "Model Uncertainty":validation_var.mean()+np.array(validation_sigma).mean()}
-valid_r2= pd.DataFrame(list(dict.items()))
-valid_r2.to_csv(r'./valid_r2.csv',index=False)
 
 # prediction data set
 Data = np.array(lossData)
@@ -285,8 +260,8 @@ N_sigma=new_sigma.mean(axis=0)/len(new_sigma)
 Nprediction_mean = Data.mean(axis=0)
 Nprediction_var = (Data**2).mean(axis=0)-(Nprediction_mean**2)
 Nprediction_std = np.sqrt(Nprediction_var)
-Nconfidence_lower.append((Nprediction_mean - 1.96 * n * Nprediction_std))  # 计算置信下限
-Nconfidence_upper.append((Nprediction_mean + 1.96 * n * Nprediction_std))  # 计算置信上限
+Nconfidence_lower.append((Nprediction_mean - 1.96 * n * Nprediction_std))
+Nconfidence_upper.append((Nprediction_mean + 1.96 * n * Nprediction_std))
 Nconfidence_upper = np.array(Nconfidence_upper).T.squeeze(-1)
 Nconfidence_lower = np.array(Nconfidence_lower).T.squeeze(-1)
 Nconfidence_width = Nconfidence_upper-Nconfidence_lower
@@ -299,12 +274,7 @@ print("aleatoric uncertainty:",np.array(N_sigma).mean())
 print("epistemic uncertainty:",np.array(Nprediction_var).mean())
 print("uncertainty:",np.array(N_sigma).mean()+np.array(Nprediction_var).mean())
 
-prediction = pd.DataFrame({"line": new1_data[:,0],"CMP": new1_data[:,1],"SValue": Nprediction_mean,
-                           'uncertainy':Nprediction_var,
-                           'Nconfidence_lower': Nconfidence_lower,'Nconfidence_upper': Nconfidence_upper,
-                           'Nconfidence_width': Nconfidence_width,
-                           'N_sigma':np.array(N_sigma)})
-prediction.to_csv(r'./prediction1.csv',index=False)
+
 
 
 
