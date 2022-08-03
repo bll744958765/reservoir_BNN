@@ -1,7 +1,8 @@
 # A reliable Bayesian Neural Network for the prediction of reservoir thickness with quantified uncertainty
 Li-Li Bao, Jiang-She Zhang, Chun-Xia Zhang, Rui Guo, Xiao-Li Wei, Zi-Lu Jiang
 
-**This code implemented by Li-Li Bao for the prediction of reservoir thickness with quantified uncertainty is based on PyTorch 1.11.0, python 3.8.
+This code implemented by Li-Li Bao for the prediction of reservoir thickness with quantified uncertainty is based on PyTorch 1.11.0, python 3.8.
+
 GPU is NVIDIA GeForce RTX 3080.
 
 The structure of our BNN:
@@ -20,7 +21,6 @@ In order to run the code, you only need to set the loading paths path1, path2 an
 ## Dataset
 In fact, the original training data set includes 459 logging data, and each logging is given an ID number. We divided the data set into 10 parts, of which 9 is used to train our network, and 1 is used as a test set to verify the effect of the network. Therefore, the training set and the test set have the same structure. They include 14 auxiliary variables such as Line, CMP, Freq, and so on. Please refer to the manuscript for the actual significance of auxiliary variables. SValue represents the reservoir thickness value, which is our prediction variable. SValue in training set and test set is known.
 
-ID	Line	CMP	Freq	AmpKurt	AmpSlp	CIP	CndWtFreq	CompAbs	DomPowS	IDomFreq	InfoEntr	MaxPkAmp	RelQ	RespBand	SValue
 ![image](https://user-images.githubusercontent.com/92556725/182534564-8e0b9437-cafc-42e4-ba5d-b2622adc8285.png)
 
 
