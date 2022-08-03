@@ -5,7 +5,7 @@ This code implemented by Li-Li Bao for the prediction of reservoir thickness wit
 
 GPU is NVIDIA GeForce RTX 3080.
 
-The structure of our BNN:
+## The structure of our BNN:
 
 ![structure1](https://user-images.githubusercontent.com/92556725/182527690-4ec3edb5-e06c-4cdd-8c0a-06fb31229288.jpg)
 
