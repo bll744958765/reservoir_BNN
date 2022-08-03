@@ -24,11 +24,11 @@ In fact, the original training data set includes 459 logging data, and each logg
 ![image](https://user-images.githubusercontent.com/92556725/182534564-8e0b9437-cafc-42e4-ba5d-b2622adc8285.png)
 
 
-Since our real data is confidential, we modified the data set before uploaded the data set, but this does not affect the run of the code. This leads to the difference between your running results and the description in the manuscript.
-
 ## Prediction 
 The map of reservoir thickness and uncertainty on the predicrion data set:
 ![131139](https://user-images.githubusercontent.com/92556725/182529230-dd6961ee-30b9-4e32-8b47-c4fb628a410c.png)
 
 ## Other
+Since our real data is confidential, we modified the data set before uploaded them, this does not affect the run of the code. This leads to the difference between your running results and the description in the manuscript.
+
 More details can be found in manuscript.
