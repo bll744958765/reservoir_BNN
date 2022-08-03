@@ -14,7 +14,7 @@ The structure of our BNN:
 Run the code for the predict of reservoir thickness :
 
 
-If you would like to try predict examples, you can download the train.cvs, valid.cvs and prediction.cvs and run prediction.py in Windows 64bit. Where the train.cvs is used to train our BNN, and the valid.cvs is used to test the presiction effection. The prediction.cvs is a dataset need to been predict.
+If you would like to try predict examples, you can download the train.csv, valid.csv and prediction.csv and run prediction.py in Windows 64bit. Where the train.csv is used to train our BNN, and the valid.csv is used to test the presiction effection. The prediction.csv is a dataset need to been predict.
 
 In order to run the code, you only need to set the loading paths path1, path2 and path3 in prediction.py as your paths of these three files to run the program.
 
