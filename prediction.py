@@ -129,7 +129,7 @@ new_sigma = []
 
 
 # For m loops，the paramaters are reset each time
-for m in range(2):
+for m in range(10):
     def weight_reset(m):
         if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
             m.reset_parameters()
