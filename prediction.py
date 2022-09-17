@@ -301,15 +301,4 @@ prediction.to_csv('./prediction1.csv',index=False)
 
 
 
-# heatmap
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set()
-data_frame = pd.read_csv('./prediction1.csv')
-flights = data_frame.pivot("CMP", "line", "SValue")
-f, ax = plt.subplots(figsize=(10, 8))
-sns.heatmap(flights, fmt="d",cmap="RdBu_r",ax=ax,vmin=0,vmax=50)
-plt.title('prediction_heatmap')
-plt.savefig('./heatmap.jpg',dpi=500)
-plt.grid(True)
-plt.show()
+
