@@ -14,9 +14,9 @@ GPU is NVIDIA GeForce RTX 3080.
 Run the code for the predict of reservoir thickness :
 
 
-If you would like to try predict examples, you can download the train.csv, valid.csv and prediction.csv and run prediction.py in Windows 64bit. Where the train.csv is used to train our BNN, and the valid.csv is used to test the presiction effection. The prediction.csv is a dataset need to been predict.
+If you would like to try predict examples, you can download the train.csv and prediction.csv and run prediction.py in Windows 64bit. Where the train.csv is used to train  and test our BNN prediction effection. The prediction.csv is a dataset need to been predict.
 
-In order to run the code, you only need to set the loading paths path1, path2 and path3 in prediction.py as your paths of these three files to run the program.
+In order to run the code, you only need to set the loading paths path1  and path2 in prediction.py as your paths of these two files to run the program.
 
 ## Dataset
 In fact, the original training data set includes 459 logging data, and each logging is given an ID number. We divided the data set into 10 parts, of which 9 is used to train our network, and 1 is used as a test set to verify the effect of the network. Therefore, the training set and the test set have the same structure. They include 14 auxiliary variables such as Line, CMP, Freq, and so on. Please refer to the manuscript for the actual significance of auxiliary variables. SValue represents the reservoir thickness value, which is our prediction variable. SValue in training set and test set is known.
