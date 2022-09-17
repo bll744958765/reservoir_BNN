@@ -298,7 +298,3 @@ prediction = pd.DataFrame({"line": new1_data[:,0],"CMP": new1_data[:,1],"SValue"
                            'Nconfidence_lower': Nconfidence_lower,'Nconfidence_upper': Nconfidence_upper,
                            'aleatoric uncertainty':np.array(N_sigma)})
 prediction.to_csv('./prediction1.csv',index=False)
-
-
-
-
